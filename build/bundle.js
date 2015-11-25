@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "fd55e7ce4f2b23fd4e36"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "dec7f4c10175db89d243"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -27335,7 +27335,7 @@
 	    key: 'render',
 	    value: function render() {
 	      var tasks = this.state.tasks.map(function (task) {
-	        return _react2['default'].createElement(_Task.Task, { key: task._id, name: task.name, active: task.active, status: task.status });
+	        return _react2['default'].createElement(_Task.Task, { key: task._id, data: task });
 	      });
 
 	      return _react2['default'].createElement(
@@ -27396,17 +27396,22 @@
 	  _createClass(Task, [{
 	    key: 'onCheck',
 	    value: function onCheck(el) {
-	      var status = el.target.checked;
+	      var active = el.target.checked;
 
-	      console.log(status);
+	      $.ajax({
+	        method: "PUT",
+	        url: "/api/tasks",
+	        data: { _id: this.props.data._id, active: active }
+	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement(ListItem, { primaryText: this.props.name,
-	        secondaryText: this.props.status,
+	      return _react2['default'].createElement(ListItem, { primaryText: this.props.data.name,
+	        secondaryText: this.props.data.status,
+	        ref: 'Item',
 	        leftCheckbox: _react2['default'].createElement(Checkbox, { onCheck: this.onCheck,
-	          defaultChecked: this.props.active })
+	          defaultChecked: this.props.data.active })
 	      });
 	    }
 	  }]);

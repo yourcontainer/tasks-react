@@ -38,7 +38,7 @@ export class Tasks extends React.Component {
 
   render() {
     let tasks = this.state.tasks.map((task) => {
-      return <Task key={task._id} name={task.name} active={task.active} status={task.status} />
+      return <Task key={task._id} data={task} />
     })
 
     return (

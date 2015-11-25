@@ -50,14 +50,16 @@ app.route('/api/tasks')
     });
   })
   .put(function(req, res) {
-    res.send('Update the tasks');
+    Tasks.update({_id: req.body._id}, {active:req.body.active}, function(err){
+      if (err) return console.error(err);
+
+      io.sockets.emit('taskChange')
+
+      res.json({status:'success'});
+    })
   })
   .delete(function(req, res) {
     res.send('Delete the tasks');
   });
-
-io.sockets.on('connection', function (socket) {
-  console.log('socket')
-});
 
 console.log('Server start');

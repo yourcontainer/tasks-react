@@ -11,20 +11,26 @@ export class Task extends React.Component {
   constructor(props) {
     super(props);
     this.onCheck = this.onCheck.bind(this);
+
   }
 
   onCheck(el) {
-    let status = el.target.checked
+    let active = el.target.checked
 
-    console.log(status)
+    $.ajax({
+      method: "PUT",
+      url: "/api/tasks",
+      data: { _id: this.props.data._id, active }
+    })
   }
 
   render() {
     return (
-      <ListItem primaryText={this.props.name}
-        secondaryText={this.props.status}
+      <ListItem primaryText={this.props.data.name}
+        secondaryText={this.props.data.status}
+        ref="Item"
         leftCheckbox={<Checkbox onCheck={this.onCheck}
-        defaultChecked={this.props.active} />}
+        defaultChecked={this.props.data.active} />}
       />
     )
   }
