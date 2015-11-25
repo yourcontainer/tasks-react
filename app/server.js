@@ -1,6 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser')
 
 var app = express();
 
@@ -17,6 +18,7 @@ var TasksSchema = new mongoose.Schema({
 var Tasks = mongoose.model('Tasks', TasksSchema);
 
 app.use(express.static('../build'));
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.get('/', function (req, res) {
   res.send(fs.readFileSync('../build/index.html'));
@@ -31,22 +33,22 @@ app.route('/api/tasks')
   })
   .post(function(req, res) {
     var Task = new Tasks({
-      name: 'test',
-      active: 1,
-      status: 'tag 1',
-      order: 1,
-    })
-    console.log(req)
+      name: req.body.name,
+      active: 0,
+      status: req.body.status,
+      order: 0,
+    });
+
     Task.save(function(err){
       if(!err)
         res.json({status:'success'});
-    })
+    });
   })
   .put(function(req, res) {
-    res.send('Update the book');
+    res.send('Update the tasks');
   })
   .delete(function(req, res) {
-    res.send('Delete the book');
+    res.send('Delete the tasks');
   });
 
 var server = app.listen(3001, function () {
