@@ -1,9 +1,10 @@
 var express = require('express');
 var fs = require('fs');
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 var app = express();
+var io = require('socket.io').listen(app.listen(3001));
 
 mongoose.connect('mongodb://localhost/tasks');
 
@@ -40,8 +41,12 @@ app.route('/api/tasks')
     });
 
     Task.save(function(err){
-      if(!err)
+      if(!err){
+        io.sockets.emit('taskChange')
+
         res.json({status:'success'});
+      }
+
     });
   })
   .put(function(req, res) {
@@ -51,9 +56,8 @@ app.route('/api/tasks')
     res.send('Delete the tasks');
   });
 
-var server = app.listen(3001, function () {
-  var host = server.address().address || 'localhost';
-  var port = server.address().port;
-
-  console.log('App listening at http://%s:%s', host, port);
+io.sockets.on('connection', function (socket) {
+  console.log('socket')
 });
+
+console.log('Server start');

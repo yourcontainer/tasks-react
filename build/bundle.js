@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "94aadccd43d6f3960697"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "fd55e7ce4f2b23fd4e36"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -20227,7 +20227,7 @@
 	      var name = this.refs.TextInput.getValue(),
 	          status = this.refs.Status.getSelectedValue();
 
-	      if (name && status) {
+	      if (name.trim() && status) {
 	        $.post('/api/tasks', {
 	          name: name, status: status
 	        }, function (response) {
@@ -27299,6 +27299,8 @@
 	    _get(Object.getPrototypeOf(Tasks.prototype), 'constructor', this).call(this, props);
 
 	    this.state = { tasks: [] };
+
+	    this.socket = io.connect();
 	  }
 
 	  _createClass(Tasks, [{
@@ -27320,7 +27322,14 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      var self = this;
+
 	      this._getTasks();
+
+	      this.socket.on('taskChange', function (data) {
+	        console.log('taskChange', data);
+	        self._getTasks();
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -27328,8 +27337,6 @@
 	      var tasks = this.state.tasks.map(function (task) {
 	        return _react2['default'].createElement(_Task.Task, { key: task._id, name: task.name, active: task.active, status: task.status });
 	      });
-
-	      console.log(this.state);
 
 	      return _react2['default'].createElement(
 	        List,

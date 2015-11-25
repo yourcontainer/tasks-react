@@ -8,6 +8,8 @@ export class Tasks extends React.Component {
     super(props);
 
     this.state = { tasks : [] }
+
+    this.socket = io.connect()
   }
 
   _getTasks() {
@@ -24,15 +26,20 @@ export class Tasks extends React.Component {
   }
 
   componentDidMount() {
-    this._getTasks()
+    var self = this;
+
+    this._getTasks();
+
+    this.socket.on('taskChange', function (data) {
+      console.log('taskChange', data)
+      self._getTasks()
+    });
   }
 
   render() {
     let tasks = this.state.tasks.map((task) => {
       return <Task key={task._id} name={task.name} active={task.active} status={task.status} />
     })
-
-    console.log(this.state)
 
     return (
       <List subheader="Tasks"> {tasks} </List>

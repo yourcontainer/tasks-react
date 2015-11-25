@@ -20,14 +20,14 @@ export class AddTask extends React.Component {
     let name   = this.refs.TextInput.getValue(),
         status = this.refs.Status.getSelectedValue();
 
-    if(name && status){
+    if(name.trim() && status){
       $.post('/api/tasks', {
         name, status
       }, (response) => {
         response.status == 'success' ? this.refs.TaskMessage.show() :
           console.error(response);
       })
-      
+
     }
 
     this.refs.TextInput.clearValue()
