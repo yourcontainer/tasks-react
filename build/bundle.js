@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "dec7f4c10175db89d243"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "38b3b0d3b2fee3c879c6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -27327,7 +27327,6 @@
 	      this._getTasks();
 
 	      this.socket.on('taskChange', function (data) {
-	        console.log('taskChange', data);
 	        self._getTasks();
 	      });
 	    }
@@ -27391,6 +27390,7 @@
 
 	    _get(Object.getPrototypeOf(Task.prototype), 'constructor', this).call(this, props);
 	    this.onCheck = this.onCheck.bind(this);
+	    this['delete'] = this['delete'].bind(this);
 	  }
 
 	  _createClass(Task, [{
@@ -27405,11 +27405,28 @@
 	      });
 	    }
 	  }, {
+	    key: 'delete',
+	    value: function _delete() {
+	      if (confirm('Delete?')) {
+	        $.ajax({
+	          method: "DELETE",
+	          url: "/api/tasks",
+	          data: { _id: this.props.data._id }
+	        });
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+
 	      return _react2['default'].createElement(ListItem, { primaryText: this.props.data.name,
 	        secondaryText: this.props.data.status,
 	        ref: 'Item',
+	        rightIconButton: _react2['default'].createElement(
+	          IconButton,
+	          { onClick: this['delete'], iconClassName: 'material-icons', tooltipPosition: 'bottom-center', tooltip: 'Delete' },
+	          'clear'
+	        ),
 	        leftCheckbox: _react2['default'].createElement(Checkbox, { onCheck: this.onCheck,
 	          defaultChecked: this.props.data.active })
 	      });

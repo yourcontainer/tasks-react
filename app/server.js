@@ -59,7 +59,13 @@ app.route('/api/tasks')
     })
   })
   .delete(function(req, res) {
-    res.send('Delete the tasks');
+    Tasks.remove({_id: req.body._id}, function(err){
+      if (err) return console.error(err);
+
+      io.sockets.emit('taskChange')
+
+      res.json({status:'success'});
+    })
   });
 
 console.log('Server start');

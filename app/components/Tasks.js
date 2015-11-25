@@ -31,7 +31,6 @@ export class Tasks extends React.Component {
     this._getTasks();
 
     this.socket.on('taskChange', function (data) {
-      console.log('taskChange', data)
       self._getTasks()
     });
   }
