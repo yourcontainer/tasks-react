@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 
 app.route('/api/tasks')
   .get(function(req, res) {
-    Tasks.find(function (err, tasks) {
+    Tasks.find().sort({'order' : 1, 'updated_at' : -1}).exec(function (err, tasks) {
       if (err) return console.error(err);
       res.json(tasks)
     });
