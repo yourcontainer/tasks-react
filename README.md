@@ -9,7 +9,7 @@ Example work with React+Express and socket.io
   npm install
   npm run dev
   npm run build
-  forever start app/server.js
+  forever start -w app/server.js
 ```
 
 open localhost:3001 
