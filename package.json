@@ -14,12 +14,12 @@
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "socket.io": "^3.0.0",
-    "webpack": "^1.12.8",
+    "webpack": "^4.0.0",
     "webpack-dev-server": "^1.12.1"
   },
   "devDependencies": {
     "babel-loader": "^6.2.0",
-    "webpack": "^1.12.8",
+    "webpack": "^4.0.0",
     "webpack-dev-server": "^1.12.1",
     "babel-core": "^5.8.22"
   }
